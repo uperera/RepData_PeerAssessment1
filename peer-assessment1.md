@@ -4,47 +4,72 @@ output: html_document
 ---
 ##Loading and preprocessing the data
 
-```{r}
+
+```r
 library(dplyr)
 library(ggplot2)
 library(lubridate)
 #setwd("c://temp/coursework-reproduceabledata/project1")
 dat <- read.csv("activity.csv")
+```
+
+```
+## Warning in file(file, "rt"): cannot open file 'activity.csv': No such file
+## or directory
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
 result <- dat %>% group_by(date) %>% summarize (total_steps = sum(steps,na.rm = TRUE ))
 ```
 
 ##What is mean total number of steps taken per day?
 
-```{r}
+
+```r
 g<- ggplot(result, aes(total_steps))
 g+geom_histogram(binwidth = 3000)+ggtitle("Count of Total no of Steps Each Day")
+```
+
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png) 
+
+```r
 mean_tot_steps <-mean(result$total_steps)
 median_tot_steps <- median(result$total_steps)
 ```
-mean total steps taken per day is `r mean_tot_steps`
+mean total steps taken per day is 9354.2295082
 
-median total seps taken per day is `r median_tot_steps`
+median total seps taken per day is 10395
 
 ##What is the average daily activity pattern?
 
-```{r}
+
+```r
 result1 <- dat %>% group_by(interval) %>% summarize(avg_step = mean(steps, na.rm = TRUE))
 plot(result1$interval, result1$avg_step, type="l", xlab = "interval", ylab = "avg_steps",main="Average daily activity pattern")
-interval_of_max_avg_step <- result1[result1$avg_step == max(result1$avg_step),][1,1]
-
 ```
-Interval with maximum no of avg steps is `r interval_of_max_avg_step`
+
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
+
+```r
+interval_of_max_avg_step <- result1[result1$avg_step == max(result1$avg_step),][1,1]
+```
+Interval with maximum no of avg steps is 835
 
 ##Imputing missing values with interval averages
 
-```{r}
-no_missing_values <- nrow(dat[is.na(dat$steps),])
 
+```r
+no_missing_values <- nrow(dat[is.na(dat$steps),])
 ```
 
-no of missing values in the dataset is `r no_missing_values`
+no of missing values in the dataset is 2304
 
-```{r}
+
+```r
 ndata <- dat[is.na(dat$step),]
 x <- vector()
 for(n in c(1:2304)){x[n] <- result1[result1$interval== ndata[n,3],][1,2]}
@@ -59,14 +84,18 @@ result3 <- new %>% group_by(date) %>% summarize (total_steps = sum(steps ))
 #histogram for new dataframe with total steps per each day
 g3<- ggplot(result3, aes(total_steps))
 g3+geom_histogram(binwidth = 3000)+ggtitle("Count of Total no of Steps Each Day with NAs filled in")
-mean_tot_steps_nafil <- mean(result3$total_steps)
-median_tot_steps_nafil <- median(result3$total_steps)
-
 ```
 
-mean total steps taken per day with NAs filled in  is `r mean_tot_steps_nafil`
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
 
-median total seps taken per day with NAs filled in  is `r median_tot_steps_nafil`
+```r
+mean_tot_steps_nafil <- mean(result3$total_steps)
+median_tot_steps_nafil <- median(result3$total_steps)
+```
+
+mean total steps taken per day with NAs filled in  is 1.0766189 &times; 10<sup>4</sup>
+
+median total seps taken per day with NAs filled in  is 1.0766189 &times; 10<sup>4</sup>
 
 ###What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
@@ -74,7 +103,8 @@ Mean and median values have increased after the NAs were filled in with interval
 
 ##Are there differences in activity patterns between weekdays and weekends?
 
-```{r}
+
+```r
 new1 <- mutate(new, day = ifelse(wday(new$date,label=TRUE) %in% c("Sat", "Sun"), "weekend", "weekday"))
 result4 <- new1[new1$day == "weekday",]
 result5 <- new1[new1$day == "weekend",]
@@ -83,6 +113,7 @@ result5 <- new1[new1$day == "weekend",]
 par(mfrow = c(2,1))
 plot(result5$interval, result5$avg_steps, type="l",xlim=c(0,14000),col="green", main = "Weekends",xlab = "interval", ylab = "avg_steps")
 plot(result4$interval, result4$avg_steps, type="l",xlim=c(0,14000),col="red", main = "Weekdays",xlab = "interval", ylab = "avg_steps")
-
 ```
+
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
 
