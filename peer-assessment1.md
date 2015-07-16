@@ -11,18 +11,6 @@ library(ggplot2)
 library(lubridate)
 #setwd("c://temp/coursework-reproduceabledata/project1")
 dat <- read.csv("activity.csv")
-```
-
-```
-## Warning in file(file, "rt"): cannot open file 'activity.csv': No such file
-## or directory
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
 result <- dat %>% group_by(date) %>% summarize (total_steps = sum(steps,na.rm = TRUE ))
 ```
 
