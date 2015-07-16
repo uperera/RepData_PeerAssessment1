@@ -8,7 +8,6 @@ output: html_document
 library(dplyr)
 library(ggplot2)
 library(lubridate)
-#setwd("c://temp/coursework-reproduceabledata/project1")
 dat <- read.csv("activity.csv")
 result <- dat %>% group_by(date) %>% summarize (total_steps = sum(steps,na.rm = TRUE ))
 ```

@@ -206,7 +206,6 @@ hr {
 <pre><code class="r">library(dplyr)
 library(ggplot2)
 library(lubridate)
-#setwd(&quot;c://temp/coursework-reproduceabledata/project1&quot;)
 dat &lt;- read.csv(&quot;activity.csv&quot;)
 result &lt;- dat %&gt;% group_by(date) %&gt;% summarize (total_steps = sum(steps,na.rm = TRUE ))
 </code></pre>
