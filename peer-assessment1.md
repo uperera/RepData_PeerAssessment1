@@ -9,6 +9,7 @@ output: html_document
 library(dplyr)
 library(ggplot2)
 library(lubridate)
+#setwd("c://temp/coursework-reproduceabledata/project1")
 dat <- read.csv("activity.csv")
 result <- dat %>% group_by(date) %>% summarize (total_steps = sum(steps,na.rm = TRUE ))
 ```
@@ -80,9 +81,9 @@ mean_tot_steps_nafil <- mean(result3$total_steps)
 median_tot_steps_nafil <- median(result3$total_steps)
 ```
 
-mean total steps taken per day with NAs filled in  is 1.0766189 &times; 10<sup>4</sup>
+mean total steps taken per day with NAs filled in  is 10766.19
 
-median total seps taken per day with NAs filled in  is 1.0766189 &times; 10<sup>4</sup>
+median total seps taken per day with NAs filled in  is 10766.19
 
 ###What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
@@ -93,13 +94,9 @@ Mean and median values have increased after the NAs were filled in with interval
 
 ```r
 new1 <- mutate(new, day = ifelse(wday(new$date,label=TRUE) %in% c("Sat", "Sun"), "weekend", "weekday"))
-result4 <- new1[new1$day == "weekday",]
-result5 <- new1[new1$day == "weekend",]
-
-#plot avg steps for each interval in respect of weekday and weeend
-par(mfrow = c(2,1))
-plot(result5$interval, result5$avg_steps, type="l",xlim=c(0,14000),col="green", main = "Weekends",xlab = "interval", ylab = "avg_steps")
-plot(result4$interval, result4$avg_steps, type="l",xlim=c(0,14000),col="red", main = "Weekdays",xlab = "interval", ylab = "avg_steps")
+result4 <- new1 %>% group_by(day,interval) %>% summarize(avg_steps = mean(steps))
+library(lattice)
+xyplot(avg_steps~interval|as.factor(day),data =result4,layout=c(1,2),type="l")
 ```
 
 ![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
