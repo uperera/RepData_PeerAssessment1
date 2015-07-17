@@ -240,7 +240,13 @@ plot(result1$interval, result1$avg_step, type=&quot;l&quot;, xlab = &quot;interv
 
 <p>Interval with maximum no of avg steps is 835</p>
 
-<p>##Imputing missing values with interval averages</p>
+<p>##Imputing missing values </p>
+
+<p>Description of imputing strategy:</p>
+
+<p>The strategy adopted for imputing missing values is to fill them with the corresponding interval average.
+The missing values are separated out into a dataframe and then imputed with the interval averages using the 
+interval averages calculated in the previous section. Then this data is combined with the rest of the data using rbind for calculating new totals and plotting.</p>
 
 <pre><code class="r">no_missing_values &lt;- nrow(dat[is.na(dat$steps),])
 </code></pre>

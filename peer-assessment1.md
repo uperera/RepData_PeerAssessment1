@@ -47,7 +47,14 @@ interval_of_max_avg_step <- result1[result1$avg_step == max(result1$avg_step),][
 ```
 Interval with maximum no of avg steps is 835
 
-##Imputing missing values with interval averages
+##Imputing missing values 
+
+Description of imputing strategy:
+
+
+The strategy adopted for imputing missing values is to fill them with the corresponding interval average.
+The missing values are separated out into a dataframe and then imputed with the interval averages using the 
+interval averages calculated in the previous section. Then this data is combined with the rest of the data using rbind for calculating new totals and plotting.
 
 
 ```r
